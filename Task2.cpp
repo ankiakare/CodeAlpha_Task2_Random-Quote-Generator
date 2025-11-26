@@ -1,74 +1,39 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
-struct Flashcard {
-    string question;
- string answer;
+struct Quote {
+    string text;
+    string author;
 };
-void show_flashcard(const Flashcard &card, bool showAnswer)
-{
-    cout << "Question:\n " << card.question << endl;
-    if (showAnswer) {
-        cout << "Answer: " << card.answer << endl;
-    }
-}
+
 int main() {
-    vector<Flashcard> flashcards = {
-        {"What is the capital of France?", "Paris"},
-        {"What is 2 + 2?", "4"},
-        {"Who wrote '1984'?", "George Orwell"}
+    vector<Quote> quotes = {
+        {"The only way to do great work is to love what you do.", "Steve Jobs"},
+        {"Life is what happens when you're busy making other plans.", "John Lennon"},
+        {"Simplicity is the ultimate sophistication.", "Leonardo da Vinci"},
+        {"Success is not in what you have, but who you are.", "Bo Bennett"},
+        {"The best revenge is massive success.", "Frank Sinatra"}
     };
-    int current = 0;
+
+    srand(static_cast<unsigned int>(time(nullptr)));
+
     bool running = true;
-    bool showAnswer = false;
     string cmd;
     while (running) {
-        cout << "---------------";
-        show_flashcard(flashcards[current], showAnswer);
-        cout << "Type: next, prev, show, hide, add, edit, delete, exit";
+        int idx = rand() % quotes.size();
+        cout << "---------------------------";
+        cout << """ << quotes[idx].text << " ; 
+        cout << "— " << quotes[idx].author << " ";
+        cout << "Type 'new' for a new quote or 'exit' to quit.";
         cout << "Command: ";
         getline(cin, cmd);
 
-        if (cmd == "next") {
-            current = (current + 1) % flashcards.size();
-            showAnswer = false;
-        } else if (cmd == "prev") {
-            current = (current - 1 + flashcards.size()) % flashcards.size();
-            showAnswer = false;
-        } else if (cmd == "show") {
-            showAnswer = true;
-        } else if (cmd == "hide") {
-            showAnswer = false;
-        } else if (cmd == "add") {
-            Flashcard newCard;
-            cout << "Enter question: ";
-            getline(cin, newCard.question);
-            cout << "Enter answer: ";
-            getline(cin, newCard.answer);
-            flashcards.push_back(newCard);
-            current = flashcards.size() - 1;
-            showAnswer = false;
-        } else if (cmd == "edit") {
-            cout << "Edit question (current: " << flashcards[current].question << "): ";
-            getline(cin, flashcards[current].question);
-            cout << "Edit answer (current: " << flashcards[current].answer << "): ";
-            getline(cin, flashcards[current].answer);
-            showAnswer = false;
-        } else if (cmd == "delete") {
-            if (flashcards.size() > 1) {
-                flashcards.erase(flashcards.begin() + current);
-                current = current % flashcards.size();
-                showAnswer = false;
-            } else {
-                cout << "Cannot delete the last flashcard!";
-            }
-        } else if (cmd == "exit") {
+        if (cmd == "exit") {
             running = false;
-        } else {
-            cout << "Invalid command.";
         }
     }
-      cout << "Goodbye!";
+    cout << "Goodbye!";
     return 0;
 }
